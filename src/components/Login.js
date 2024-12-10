@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import { getUser } from '../redux/userSlice';
+import ReactGA from "react-ga4";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,8 +13,15 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    ReactGA._gaCommandSendPageview(window.location.pathname)
+  },[])
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -29,6 +37,12 @@ const Login = () => {
         dispatch(getUser(res?.data?.user));
         if(res.data.success){
           localStorage.setItem("id", res.data.user._id )
+          ReactGA.event({
+            category: user._id,
+            action: "test action",
+            label: "test label",
+            value: user.password
+          })
           navigate("/");
           toast.success(res.data.message);
         }

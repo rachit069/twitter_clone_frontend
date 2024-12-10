@@ -96,7 +96,10 @@ import Home from "./components/Home";
 import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
+import ReactGA from "react-ga4";
 
+const TRACKING_ID = "G-K8X9Y3P48N";
+ReactGA.initialize(TRACKING_ID);
 
 function App() {
   return (
