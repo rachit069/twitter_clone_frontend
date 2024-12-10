@@ -87,39 +87,39 @@
 
 // export default App;
 
-import "./App.css";
-import Body from "./components/Body";
-import { Toaster } from "react-hot-toast";
-import Chat from "./components/Chat";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Feed from "./components/Feed";
-import Profile from "./components/Profile";
-import Login from "./components/Login";
-import ReactGA from "react-ga4";
+// import "./App.css";
+// import Body from "./components/Body";
+// import { Toaster } from "react-hot-toast";
+// import Chat from "./components/Chat";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Home from "./components/Home";
+// import Feed from "./components/Feed";
+// import Profile from "./components/Profile";
+// import Login from "./components/Login";
+// import ReactGA from "react-ga4";
 
-const TRACKING_ID = "G-K8X9Y3P48N";
-ReactGA.initialize(TRACKING_ID);
+// const TRACKING_ID = "G-K8X9Y3P48N";
+// ReactGA.initialize(TRACKING_ID);
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Body />
-        <Toaster />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/chat/:userId/:otherUserId" element={<Chat />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
+// function App() {
+//   return (
+//     <Router>
+//       <div className="App">
+//         <Body />
+//         <Toaster />
+//         <Routes>
+//           <Route path="/" element={<Home />} />
+//           <Route path="/feed" element={<Feed />} />
+//           <Route path="/profile/:id" element={<Profile />} />
+//           <Route path="/chat/:userId/:otherUserId" element={<Chat />} />
+//           <Route path="/login" element={<Login />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// }
 
-export default App;
+// export default App;
 
 // import "./App.css";
 // import Body from "./components/Body";
@@ -190,3 +190,53 @@ export default App;
 
 
 
+import "./App.css";
+import Body from "./components/Body";
+import { Toaster } from "react-hot-toast";
+import Chat from "./components/Chat";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import Home from "./components/Home";
+import Feed from "./components/Feed";
+import Profile from "./components/Profile";
+import Login from "./components/Login";
+import ReactGA from "react-ga4";
+import { useEffect } from "react";
+
+const TRACKING_ID = "G-K8X9Y3P48N"; // Your GA4 Tracking ID
+ReactGA.initialize(TRACKING_ID);
+
+const AnalyticsWrapper = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
+  }, [location]);
+
+  return null;
+};
+
+function App() {
+  return (
+    <Router>
+      <AnalyticsWrapper />
+      <div className="App">
+        <Body />
+        <Toaster />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/chat/:userId/:otherUserId" element={<Chat />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
